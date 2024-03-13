@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> {
   UserLocation? userLocation;
   bool isLoading = true;
   bool _locationDetermined = false;
-  String appBarTitle = 'Weather App'; // Default app bar title
+  String appBarTitle = 'Weather App';
 
   @override
   void initState() {
@@ -81,24 +81,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(appBarTitle),
-      // ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            if (isLoading && userLocation != null)
-              CircularProgressIndicator()
-            else if (_locationDetermined && userLocation != null)
-              RealTimeWeatherScreen(
-                latitude: userLocation!.latitude,
-                longitude: userLocation!.longitude,
-              ),
-          ],
-        ),
-      ),
+    return Column(
+      children: [
+        if (isLoading && userLocation != null)
+          CircularProgressIndicator(),
+        if (_locationDetermined && userLocation != null)
+          Expanded(
+            child: RealTimeWeatherScreen(
+              latitude: userLocation!.latitude,
+              longitude: userLocation!.longitude,
+            ),
+          ),
+      ],
     );
   }
 }

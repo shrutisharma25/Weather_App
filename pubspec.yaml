@@ -12,6 +12,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.2.0
   geolocator: ^10.1.0
+  geocoding: ^2.2.1+1
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -28,6 +30,8 @@ flutter:
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
+  assets:
+    - assets/images/
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
