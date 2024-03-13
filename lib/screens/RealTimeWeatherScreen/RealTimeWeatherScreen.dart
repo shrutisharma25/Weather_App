@@ -53,16 +53,16 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return Container( // Styling the error message and ensuring it touches the sides of the screen
+            return Container(
               padding: EdgeInsets.all(20.0),
-              color: Colors.red, // Background color for the error message
+              color: Colors.red,
               child: Center(
                 child: Text(
                   '${snapshot.error}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white, // Text color for the error message
-                    fontSize: 18.0, // Font size for the error message
+                    color: Colors.white,
+                    fontSize: 18.0,
                   ),
                 ),
               ),
@@ -108,7 +108,7 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
                       Expanded(
                         child: Container(
                           height: 100,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          padding: EdgeInsets.symmetric(horizontal: 2),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

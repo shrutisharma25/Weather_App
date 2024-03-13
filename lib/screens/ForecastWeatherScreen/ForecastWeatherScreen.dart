@@ -17,51 +17,49 @@ class ForecastWeatherScreen extends StatefulWidget {
 
 class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
   final ForecastWeatherService forecastService = ForecastWeatherService();
+  List<Forecast>? forecastData;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchForecastData();
+  }
+
+  Future<void> _fetchForecastData() async {
+    final fetchedData = await forecastService.fetchForecastWeather(widget.latitude, widget.longitude);
+    print("forecastData-->"+fetchedData.toString());
+    setState(() {
+      forecastData = fetchedData;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Forecast>?>(
-      future: forecastService.fetchForecastWeather(
-          widget.latitude, widget.longitude),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else {
-          if (snapshot.data != null && snapshot.data!.isNotEmpty) {
-            return Center(
-              child: ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  final forecast = snapshot.data![index];
-                  return Card(
-                    clipBehavior: Clip.hardEdge,
-                    child: InkWell(
-                      splashColor: Colors.blue.withAlpha(30),
-                      child: SizedBox(
-                        width: 300,
-                        height: 100,
-                        child: Row(
-                          children: [
-                            Text('Temperature: ${DateFormat.jm().format(DateTime.parse(forecast.time))}°C')
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
+    return forecastData != null
+        ? ListView.builder(
+      itemCount: forecastData!.length,
+      itemBuilder: (context, index) {
+        Forecast forecast = forecastData![index];
+        return Card(
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            child: SizedBox(
+              width: 300,
+              height: 100,
+              child: Row(
+                children: [
+                  Text('Time: ${DateFormat.jm().format(DateTime.parse(forecast.time))}'),
+                  Text('Temperature: ${forecast.temperature}°C')
+                ],
               ),
-            );
-          } else {
-            return Text('No forecast data available.');
-          }
-        }
+            ),
+          ),
+        );
       },
+    )
+        : Center(
+      child: CircularProgressIndicator(),
     );
-  }
-
-  Widget TodayTemperature() {
-    return Text("hi");
   }
 }
