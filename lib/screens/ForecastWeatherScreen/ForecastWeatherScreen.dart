@@ -136,6 +136,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
             ? Container(
                 child: Card(
                   clipBehavior: Clip.hardEdge,
+                  color: Colors.blue[400],
                   child: SizedBox(
                     width: 330,
                     height: 250,
@@ -164,6 +165,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                   padding:
                                       const EdgeInsets.fromLTRB(6, 0, 6, 5),
                                   child: Card(
+                                    // color: Colors.blue[50],
                                     clipBehavior: Clip.hardEdge,
                                     child: InkWell(
                                       splashColor: Colors.blue.withAlpha(30),
@@ -174,18 +176,18 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                           children: [
                                             SizedBox(width: 10),
                                             Text(
-                                                '${DateFormat.E().format(DateTime.parse(forecast.time))}'),
+                                                '${DateFormat.E().format(DateTime.parse(forecast.time))}',style: TextStyle(fontWeight: FontWeight.bold),),
                                             SizedBox(
                                               width: 100,
                                             ),
-                                            Text("Image"),
+                                            Text("Image",style: TextStyle(fontWeight: FontWeight.bold),),
                                             SizedBox(width:70,),
                                             // Image.asset(
                                             //   weatherImage,
                                             //   width: 20,
                                             //   height: 20,
                                             // ),
-                                            Text('${forecast.temperature}°C')
+                                            Text('${forecast.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
                                           ],
                                         ),
                                       ),
