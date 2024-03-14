@@ -21,7 +21,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
   List<Forecast>? forecastDailyData;
   bool isLoading = true;
   String todaysDate =
-  DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now().toUtc());
+      DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now().toUtc());
 
   @override
   void initState() {
@@ -62,120 +62,147 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
     return Column(
       children: [
         ForeCastHourly(),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         ForeCastDaily()
       ],
     );
   }
 
-  Widget ForeCastHourly(){
+  Widget ForeCastHourly() {
     return isLoading
         ? Center(
-      child: CircularProgressIndicator(),
-    )
+            child: CircularProgressIndicator(),
+          )
         : forecastData != null
-        ? Container(
-      height: 90,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: forecastData!.length,
-        itemBuilder: (BuildContext context, int index) {
-          final forecast = forecastData![index];
-          final weatherImage =
-          getWeatherImage(double.parse(forecast.temperature));
-          return Padding(
-            padding: const EdgeInsets.all(8.0), // Adjust padding as needed
-            child: Card(
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                splashColor: Colors.blue.withAlpha(30),
-                child: SizedBox(
-                  width: 100,
-                  height: 50,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Image.asset(
-                          //   weatherImage,
-                          //   width: 10, // Adjust width as needed
-                          //   height: 5, // Adjust height as needed
-                          // ),
-                          // SizedBox(height: 10,),
-                          Text(
-                              '${DateFormat.jm().format(DateTime.parse(forecast.time))}'),
-                          Text('${forecast.temperature}°C')
-                        ],
+            ? Container(
+                height: 90,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: forecastData!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final forecast = forecastData![index];
+                    final weatherImage =
+                        getWeatherImage(double.parse(forecast.temperature));
+                    return Padding(
+                      padding:
+                          const EdgeInsets.fromLTRB(8, 8, 2, 10),
+                      child: Card(
+                        color: Colors.blue[400],
+                        clipBehavior: Clip.hardEdge,
+                        child: InkWell(
+                          splashColor: Colors.blue.withAlpha(30),
+                          child: SizedBox(
+                            width: 100,
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Image.asset(
+                                    //   weatherImage,
+                                    //   width: 10, // Adjust width as needed
+                                    //   height: 5, // Adjust height as needed
+                                    // ),
+                                    // SizedBox(height: 10,),
+                                    Text(
+                                        '${DateFormat.jm().format(DateTime.parse(forecast.time))}',style: TextStyle(fontWeight: FontWeight.bold),),
+                                    Text('${forecast.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              ),
-            ),
-          );
-        },
-      ),
-    )
-        : Center(
-      child: Text('No forecast data available.'),
-    );
+              )
+            : Center(
+                child: Text('No forecast data available.'),
+              );
   }
 
-  Widget ForeCastDaily(){
+  Widget ForeCastDaily() {
     return isLoading
         ? Center(
-      child: CircularProgressIndicator(),
-    )
+            child: CircularProgressIndicator(),
+          )
         : forecastData != null
-        ? Container(
-      child: Card(
-        clipBehavior: Clip.hardEdge,
-        child: SizedBox(
-          width: 350,
-          height: 300,
-          child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: forecastData!.length,
-            itemBuilder: (BuildContext context, int index) {
-              final forecast = forecastData![index];
-              final weatherImage =
-              getWeatherImage(double.parse(forecast.temperature));
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(6, 0, 6, 5), // Adjust padding as needed
+            ? Container(
                 child: Card(
                   clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    child: SizedBox(
-                      width: 90,
-                      height: 40,
-                      child: Row(
+                  child: SizedBox(
+                    width: 330,
+                    height: 250,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
                         children: [
-                          // Image.asset(
-                          //   weatherImage,
-                          //   width: 10, // Adjust width as needed
-                          //   height: 5, // Adjust height as needed
-                          // ),
-                          // SizedBox(height: 10,),
-                          Text(
-                              '${DateFormat.jm().format(DateTime.parse(forecast.time))}'),
-                          Text('${forecast.temperature}°C')
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
+                            child: Text(
+                              "4 Days Forecast",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 230,
+                            child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemCount: forecastData!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final forecast = forecastData![index];
+                                final weatherImage = getWeatherImage(
+                                    double.parse(forecast.temperature));
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(6, 0, 6, 5),
+                                  child: Card(
+                                    clipBehavior: Clip.hardEdge,
+                                    child: InkWell(
+                                      splashColor: Colors.blue.withAlpha(30),
+                                      child: SizedBox(
+                                        width: 90,
+                                        height: 40,
+                                        child: Row(
+                                          children: [
+                                            SizedBox(width: 10),
+                                            Text(
+                                                '${DateFormat.E().format(DateTime.parse(forecast.time))}'),
+                                            SizedBox(
+                                              width: 100,
+                                            ),
+                                            Text("Image"),
+                                            SizedBox(width:70,),
+                                            // Image.asset(
+                                            //   weatherImage,
+                                            //   width: 20,
+                                            //   height: 20,
+                                            // ),
+                                            Text('${forecast.temperature}°C')
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
                         ],
                       ),
                     ),
                   ),
                 ),
+              )
+            : Center(
+                child: Text('No forecast data available.'),
               );
-            },
-          ),
-        )
-      )
-    )
-        : Center(
-      child: Text('No forecast data available.'),
-    );
   }
-
 }
