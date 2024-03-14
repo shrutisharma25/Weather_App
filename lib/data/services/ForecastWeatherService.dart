@@ -73,8 +73,12 @@ class ForecastWeatherService {
         print("temperature-->" + temperature.toString());
         print("timefore-->" + time);
 
+        final day = DateFormat.E().format(DateTime.parse(time));
+
+        print("day-->"+day);
+
         forecasts.add(Forecast(
-          time: time,
+          time: day,
           temperature: temperature,
         ));
       }

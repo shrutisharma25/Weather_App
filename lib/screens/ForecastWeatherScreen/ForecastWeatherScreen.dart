@@ -176,7 +176,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                           children: [
                                             SizedBox(width: 10),
                                             Text(
-                                                '${DateFormat.E().format(DateTime.parse(forecast.time))}',style: TextStyle(fontWeight: FontWeight.bold),),
+                                                '${forecast.time}',style: TextStyle(fontWeight: FontWeight.bold),),
                                             SizedBox(
                                               width: 100,
                                             ),
