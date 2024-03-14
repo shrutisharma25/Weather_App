@@ -18,7 +18,7 @@ class ForecastWeatherScreen extends StatefulWidget {
 class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
   final ForecastWeatherService forecastService = ForecastWeatherService();
   List<Forecast>? forecastData;
-  List<Forecast>? forecastDailyData;
+  List<Forecast>? forecastDailyDataList;
   bool isLoading = true;
   String todaysDate =
       DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now().toUtc());
@@ -39,7 +39,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
       print("fetchedDailyData-->" + fetchedDailyData.toString());
       setState(() {
         forecastData = fetchedData;
-        forecastDailyData = fetchedDailyData;
+        forecastDailyDataList = fetchedDailyData;
         isLoading = false;
       });
     } catch (error) {
@@ -82,7 +82,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                   scrollDirection: Axis.horizontal,
                   itemCount: forecastData!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final forecast = forecastData![index];
+                    Forecast forecast = forecastData![index];
                     final weatherImage =
                         getWeatherImage(double.parse(forecast.temperature));
                     return Padding(
@@ -156,11 +156,11 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                             height: 230,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
-                              itemCount: forecastData!.length,
+                              itemCount: forecastDailyDataList!.length,
                               itemBuilder: (BuildContext context, int index) {
-                                final forecast = forecastData![index];
+                                Forecast forecastDaily = forecastDailyDataList![index];
                                 final weatherImage = getWeatherImage(
-                                    double.parse(forecast.temperature));
+                                    double.parse(forecastDaily.temperature));
                                 return Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(6, 0, 6, 5),
@@ -176,7 +176,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                           children: [
                                             SizedBox(width: 10),
                                             Text(
-                                                '${forecast.time}',style: TextStyle(fontWeight: FontWeight.bold),),
+                                                '${forecastDaily.time}',style: TextStyle(fontWeight: FontWeight.bold),),
                                             SizedBox(
                                               width: 100,
                                             ),
@@ -187,7 +187,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                             //   width: 20,
                                             //   height: 20,
                                             // ),
-                                            Text('${forecast.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
+                                            Text('${forecastDaily.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
                                           ],
                                         ),
                                       ),
