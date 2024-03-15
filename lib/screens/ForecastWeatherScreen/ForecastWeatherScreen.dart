@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:weather_app/data/services/ForecastWeatherService.dart';
 import 'package:weather_app/data/models/Forecast.dart';
 
+import '../../utils/Icons.dart';
+
 class ForecastWeatherScreen extends StatefulWidget {
   final String latitude;
   final String longitude;
@@ -20,6 +22,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
   List<Forecast>? forecastData;
   List<Forecast>? forecastDailyDataList;
   bool isLoading = true;
+  GetWeatherImage fetchWeatherImage = GetWeatherImage();
   String todaysDate =
       DateFormat('yyyy-MM-dd', 'en_US').format(DateTime.now().toUtc());
 
@@ -50,12 +53,20 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
   }
 
   String getWeatherImage(double temperature) {
-    if (temperature > 25) {
-      return "assets/images/hot.png"; // Image file name for hot weather
+    if (temperature < 0) {
+      return "assets/images/snow.png";
+    } else if (temperature >= 0 && temperature < 15) {
+      return "assets/images/lightrain.png";
+    } else if (temperature >= 15 && temperature < 25) {
+      return "assets/images/heavyrain.png";
+    } else if (temperature >= 25 && temperature <= 35) {
+      return "assets/images/cloudsunny.png";
     } else {
-      return "assets/images/cold.png"; // Image file name for cold weather
+      return "assets/images/clear.png";
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,42 +94,46 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                   itemCount: forecastData!.length,
                   itemBuilder: (BuildContext context, int index) {
                     Forecast forecast = forecastData![index];
-                    final weatherImage =
-                        getWeatherImage(double.parse(forecast.temperature));
-                    return Padding(
-                      padding:
-                          const EdgeInsets.fromLTRB(8, 8, 2, 10),
-                      child: Card(
-                        color: Colors.blue[400],
-                        clipBehavior: Clip.hardEdge,
-                        child: InkWell(
-                          splashColor: Colors.blue.withAlpha(30),
-                          child: SizedBox(
-                            width: 100,
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    // Image.asset(
-                                    //   weatherImage,
-                                    //   width: 10, // Adjust width as needed
-                                    //   height: 5, // Adjust height as needed
-                                    // ),
-                                    // SizedBox(height: 10,),
-                                    Text(
-                                        '${DateFormat.jm().format(DateTime.parse(forecast.time))}',style: TextStyle(fontWeight: FontWeight.bold),),
-                                    Text('${forecast.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
-                                  ],
-                                ),
-                              ],
+                    final weatherImage = fetchWeatherImage.getWeatherImage(double.parse(forecast.temperature));
+                    print("weatherImage " +weatherImage.toString());
+                    return Row(
+                      children: [
+                        SizedBox(width: 6),
+                        // Adjust the space between cards here
+                        Card(
+                          color: Colors.blue[400],
+                          clipBehavior: Clip.hardEdge,
+                          shadowColor: Colors.orangeAccent[100],
+                          child: InkWell(
+                            splashColor: Colors.blue.withAlpha(30),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    weatherImage,
+                                    width: 70,
+                                    height: 30,
+                                    //fit: BoxFit.cover,
+                                  ),
+                                  Text(
+                                    '${DateFormat.jm().format(DateTime.parse(forecast.time))}',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '${forecast.temperature}°C',
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        )
+                      ],
                     );
+
+
                   },
                 ),
               )
@@ -159,7 +174,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                               itemCount: forecastDailyDataList!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 Forecast forecastDaily = forecastDailyDataList![index];
-                                final weatherImage = getWeatherImage(
+                                final weatherImage = fetchWeatherImage.getWeatherImage(
                                     double.parse(forecastDaily.temperature));
                                 return Padding(
                                   padding:
@@ -172,25 +187,28 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                       child: SizedBox(
                                         width: 90,
                                         height: 40,
-                                        child: Row(
-                                          children: [
-                                            SizedBox(width: 10),
-                                            Text(
-                                                '${forecastDaily.time}',style: TextStyle(fontWeight: FontWeight.bold),),
-                                            SizedBox(
-                                              width: 100,
-                                            ),
-                                            Text("Image",style: TextStyle(fontWeight: FontWeight.bold),),
-                                            SizedBox(width:70,),
-                                            // Image.asset(
-                                            //   weatherImage,
-                                            //   width: 20,
-                                            //   height: 20,
-                                            // ),
-                                            Text('${forecastDaily.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
-                                          ],
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                            child:Row(
+                                              children: [
+                                                SizedBox(width: 10),
+                                                Text(
+                                                  '${forecastDaily.time}',style: TextStyle(fontWeight: FontWeight.bold),),
+                                                SizedBox(
+                                                  width: 100,
+                                                ),
+                                                Image.asset(
+                                                  weatherImage,
+                                                  width: 70,
+                                                  height: 80,
+                                                ),
+                                                SizedBox(width:70,),
+
+                                                Text('${forecastDaily.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
+                                              ],
+                                            )
                                         ),
-                                      ),
+                                      )
                                     ),
                                   ),
                                 );
@@ -207,4 +225,5 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                 child: Text('No forecast data available.'),
               );
   }
+
 }
