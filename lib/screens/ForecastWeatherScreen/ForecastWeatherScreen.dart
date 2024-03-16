@@ -99,9 +99,8 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                     return Row(
                       children: [
                         SizedBox(width: 6),
-                        // Adjust the space between cards here
                         Card(
-                          color: Colors.blue[400],
+                          color: Colors.white,
                           clipBehavior: Clip.hardEdge,
                           shadowColor: Colors.orangeAccent[100],
                           child: InkWell(
@@ -114,8 +113,7 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                   Image.asset(
                                     weatherImage,
                                     width: 70,
-                                    height: 30,
-                                    //fit: BoxFit.cover,
+                                    height: 27,
                                   ),
                                   Text(
                                     '${DateFormat.jm().format(DateTime.parse(forecast.time))}',
@@ -151,24 +149,25 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
             ? Container(
                 child: Card(
                   clipBehavior: Clip.hardEdge,
-                  color: Colors.blue[400],
+                  color: Colors.white,
                   child: SizedBox(
                     width: 330,
-                    height: 250,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
                         children: [
+                          SizedBox(height: 15,),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(6, 5, 6, 5),
                             child: Text(
-                              "4 Days Forecast",
+                              forecastDailyDataList!.length.toString()+" Days Forecast",
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
                           ),
                           SizedBox(
-                            height: 230,
+                            height: MediaQuery.of(context).size.height * 0.4,
                             child: ListView.builder(
                               scrollDirection: Axis.vertical,
                               itemCount: forecastDailyDataList!.length,
@@ -180,10 +179,10 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                   padding:
                                       const EdgeInsets.fromLTRB(6, 0, 6, 5),
                                   child: Card(
-                                    // color: Colors.blue[50],
+                                    color: Colors.blue[400],
                                     clipBehavior: Clip.hardEdge,
                                     child: InkWell(
-                                      splashColor: Colors.blue.withAlpha(30),
+                                      splashColor: Colors.blue[400],
                                       child: SizedBox(
                                         width: 90,
                                         height: 40,
@@ -195,14 +194,14 @@ class _ForecastWeatherScreenState extends State<ForecastWeatherScreen> {
                                                 Text(
                                                   '${forecastDaily.time}',style: TextStyle(fontWeight: FontWeight.bold),),
                                                 SizedBox(
-                                                  width: 100,
+                                                  width: 85,
                                                 ),
                                                 Image.asset(
                                                   weatherImage,
                                                   width: 70,
                                                   height: 80,
                                                 ),
-                                                SizedBox(width:70,),
+                                                SizedBox(width:55,),
 
                                                 Text('${forecastDaily.temperature}°C',style: TextStyle(fontWeight: FontWeight.bold),)
                                               ],

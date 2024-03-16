@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:weather_app/data/models/Weather.dart';
 import 'package:weather_app/data/services/RealTimeWeatherService.dart';
 import 'package:weather_app/screens/ForecastWeatherScreen/ForecastWeatherScreen.dart';
+import 'package:weather_app/utils/Icons.dart';
 
 class RealTimeWeatherScreen extends StatefulWidget {
   final String latitude;
@@ -18,6 +19,8 @@ class RealTimeWeatherScreen extends StatefulWidget {
 class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
   final RealTimeWeatherService weatherService = RealTimeWeatherService();
   String locationName = '';
+  GetWeatherImage fetchWeatherImage = GetWeatherImage();
+
 
   @override
   void initState() {
@@ -40,9 +43,10 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue[400],
       appBar: AppBar(
-        title: Center(child: Text('Real Time Weather'),),
+        backgroundColor: Colors.blue[400],
+        title: Center(child: Text('Real Time Weather',style: TextStyle(fontWeight: FontWeight.bold),),),
       ),
       body: FutureBuilder<Weather>(
         future: weatherService.fetchRealTimeWeather(
@@ -77,16 +81,13 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
               } catch (e) {
                 print('Error decoding JSON: $e');
               }
-              if (valuesMap != null && valuesMap['cloudCover'] != null && valuesMap['cloudCover'] > 50) {
-                weatherImage = "assets/images/cloudy.png";
-              } else {
-                weatherImage = "assets/images/clear.png";
-              }
+              String? temp = valuesMap?['temperature'].toString();
+              weatherImage = fetchWeatherImage.getWeatherImage(double.parse(temp!));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 7),
                     child: Text(
                       '$locationName',
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -95,7 +96,7 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     child: Opacity(
-                      opacity: 0.5, // Set opacity for the cloud base text
+                      opacity: 0.8,
                       child: Text(
                         '${DateFormat('MMM dd, yyyy').format(DateTime.parse(weather.time))}',
                         style: TextStyle(fontSize: 16),
@@ -124,7 +125,7 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
                       Container(
                         height: 100,
                         width: 1,
-                        color: Colors.grey.withOpacity(0.5), // Dimmed vertical line
+                        color: Colors.white.withOpacity(0.7), // Dimmed vertical line
                       ),
                       Expanded(
                         child: Container(
@@ -143,6 +144,7 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 5,),
                   ForecastWeatherScreen(latitude:widget.latitude,longitude:widget.longitude),
                 ],
               );
