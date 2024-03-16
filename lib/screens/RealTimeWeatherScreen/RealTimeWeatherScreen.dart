@@ -125,7 +125,7 @@ class _RealTimeWeatherScreenState extends State<RealTimeWeatherScreen> {
                       Container(
                         height: 100,
                         width: 1,
-                        color: Colors.white.withOpacity(0.7), // Dimmed vertical line
+                        color: Colors.white.withOpacity(0.7),
                       ),
                       Expanded(
                         child: Container(

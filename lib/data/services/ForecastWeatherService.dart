@@ -59,20 +59,15 @@ class ForecastWeatherService {
 
     print("fullUrlForeCast-->" + fullUrl);
     final response = await http.get(Uri.parse(fullUrl));
-    print("response2-->" + response.toString());
 
     List<Forecast> forecasts = [];
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
       print("jsonResponse-->" + jsonResponse.toString());
       final data = jsonResponse['timelines']['daily'];
-      print("data2-->" + data.toString());
       for (var item in data) {
         final time = item['time'].toString();
         String temperature = item['values']['temperatureAvg'].toString();
-        print("temperature-->" + temperature.toString());
-        print("timefore-->" + time);
-
         final day = DateFormat.E().format(DateTime.parse(time));
 
         print("day-->"+day);

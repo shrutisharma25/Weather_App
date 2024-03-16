@@ -67,9 +67,8 @@ class _HomePageState extends State<HomePage> {
             ),
             TextButton(
               onPressed: () async {
-                // Request location permission
                 Navigator.of(context).pop();
-                await _determineLocation(context); // Await here
+                await _determineLocation(context);
               },
               child: Text('Grant'),
             ),
